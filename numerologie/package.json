@@ -1,0 +1,22 @@
+{
+  "name": "numerologie",
+  "version": "1.0.0",
+  "description": "de la numerologie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LDan07/cours-web.git"
+  },
+  "author": "Lucie Danard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LDan07/cours-web/issues"
+  },
+  "homepage": "https://github.com/LDan07/cours-web#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
