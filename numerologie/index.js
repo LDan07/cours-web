@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
     
-        fichier = fs.readFileSync("./static/index.html", {encoding:'utf8'})
+        fichier = fs.readFileSync("static/index.html", {encoding:'utf8'})
         res.end(fichier);
     }
     else if (fs.existsSync("." + req.url)) {
