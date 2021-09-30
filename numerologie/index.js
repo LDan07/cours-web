@@ -1,28 +1,31 @@
-const path = require('path')
-
-const express = require('express')
-const app = express()
+const http = require('http');
+const fs = require('fs');
 
 const hostname = '127.0.0.1';
 const port = 10422;
 
+const server = http.createServer((req, res) => {
+    console.log(req.url)
 
-app.use("/static", express.static(path.join(__dirname, '/static')))
-
-app.get('/', (req, res) => {
-    res.redirect(301, '/static/index.html')
-})
-
-
-app.use(function (req, res) {
-    console.log("et c'est le 404 : " + req.url);
-
+    if (req.url === "/") {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+    
+        fichier = fs.readFileSync("./static/index.html", {encoding:'utf8'})
+        res.end(fichier);
+    }
+    else if (fs.existsSync("." + req.url)) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+    
+        fichier = fs.readFileSync("." + req.url, {encoding:'utf8'})
+        res.end(fichier);
+    }
+    else {
     res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/html');
-
-    res.end("<html><head><title>la quatre cent quatre</title></head><body><h1>Et c'est la 404.</h1><img  src=\"https://www.leblogauto.com/wp-content/uploads/2020/04/Peugeot-404-1.jpg\" /></body></html>");
-
-})
-
-app.listen(port, hostname);
-console.log(`Server running at http://${hostname}:${port}/`);
+    res.setHeader('Content-Type', 'text/plain');
+    res.end();
+    }
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
