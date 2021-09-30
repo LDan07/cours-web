@@ -3,14 +3,9 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
-const hostname = '10422';
-const port = 3000;
+const hostname = '127.0.0.1';
+const port = 10422;
 
-app.use(function (req, res, next) {
-    date = new Date(Date.now())
-    console.log('Time:', date.toLocaleDateString(), date.toLocaleTimeString(), "; url :", req.url);
-    next(); // sans cette ligne on ne pourra pas poursuivre.
-})
 
 app.use("/static", express.static(path.join(__dirname, '/static')))
 
