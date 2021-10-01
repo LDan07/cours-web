@@ -24,12 +24,23 @@
             </div>
 
         </div>
-        <script src="./numerologie.js"></script>
         <script>
+            function on_click() {
+                prenom = document.querySelector("#form-input").value;
+                if (prenom) {
+                    fetch('/prénom/?valeur=' + prenom)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector("#chiffre").textContent = data.chiffre
+                            console.log(data)
+                        })
+                } else {
+                    document.querySelector("#chiffre").textContent = "?"
+                }
+
+            }
             document.querySelector("#form-button").addEventListener("click", (event) => {
-                chaine = document.querySelector("#form-input").value;
-                chiffre = chiffreAssocie(chaine);
-                document.querySelector("#chiffre").textContent = chiffre;
+                on_click()
                 event.preventDefault();
             })
         </script>

@@ -1,28 +1,47 @@
-var express = require('express')
-var app = express()
+const path = require('path')
+
+const express = require('express')
+
+const numerologie = require('./back/numerologie');
+
+const app = express()
+
+const hostname = '127.0.0.1';
+const port = 10422;
+
 
 app.use(function (req, res, next) {
-    console.log('Time:', Date.now());
+    date = new Date(Date.now())
+    console.log('Time:', date.toLocaleDateString(), date.toLocaleTimeString(), "; url :", req.url);
     next(); // sans cette ligne on ne pourra pas poursuivre.
 })
 
-app.use("/static", express.static(__dirname + '/static'))
+app.use("/static", express.static(path.join(__dirname, '/static')))
 
-app.get('/', (request, response) => {
-    response
-        .redirect(301, '/static/index.html')
+app.get('/', (req, res) => {
+    res.redirect(301, '/static/index.html')
 })
 
+app.get(encodeURI('/prénom'), (req, res) => {
+    console.log(req.query)
+    prenom = req.query["valeur"]
+    chiffre = numerologie.chiffre(prenom)
 
-app.use(function (request,response) {
-    console.log("et c'est le 404 : " + request.url);
+    res.json({
+        prénom: prenom,
+        chiffre: chiffre,
+    })
+})
 
-    response.statusCode = 404;
-    response.setHeader('Content-Type', 'text/html');
+app.use(function (req, res) {
+    console.log("et c'est le 404 : " + req.url);
 
-    response.end("<html><head><title>la quatre cent quatre</title></head><body><h1>Et c'est la 404.</h1><img  src=\"https://www.leblogauto.com/wp-content/uploads/2020/04/Peugeot-404-1.jpg\" /></body></html>");
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/html');
+
+    res.end("<html><head><title>la quatre cent quatre</title></head><body><h1>Et c'est la 404.</h1><img  src=\"https://www.leblogauto.com/wp-content/uploads/2020/04/Peugeot-404-1.jpg\" /></body></html>");
 
 })
 
-app.listen(3000);
-console.log("c'est parti")
+app.listen(port, hostname);
+console.log(`Server running at http://${hostname}:${port}/`);
